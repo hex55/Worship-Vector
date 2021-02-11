@@ -82,7 +82,7 @@ void InitGameCore(void) {
 	screen = SDL_SetVideoMode (320, 240, 8, SDL_HWSURFACE | SDL_DOUBLEBUF);
 #endif
 
-#if defined(WIN32) || defined(GCW) || defined(LINUX)
+#if defined(WIN32) || defined(GCW) || defined(LINUX) || defined(POCKETGO)
 	SDL_ShowCursor(SDL_DISABLE);
 	screen = SDL_SetVideoMode (320, 240, 32, SDL_HWSURFACE | SDL_DOUBLEBUF);
 	//screen = SDL_SetVideoMode (640 ,480, 32, SDL_HWSURFACE | SDL_FULLSCREEN);
@@ -152,7 +152,7 @@ enum MAP_KEY
 	VK_FZ// 18 :)
 };
 #endif
-#if defined(WIN32) || defined(GCW) || defined(LINUX)// WIN button mapping
+#if defined(WIN32) || defined(GCW) || defined(LINUX) || defined(POCKETGO)// WIN button mapping
 enum MAP_KEY
 {
 	VK_FA , // 0
@@ -215,7 +215,7 @@ void CoreProcInput(void) {
 
 	dpad = angle_detection[x + y * 3];
 
-#if defined(WIN32) || defined(GCW) || defined(LINUX)
+#if defined(WIN32) || defined(GCW) || defined(LINUX) || defined(POCKETGO)
 	//Keyboard
 	SDL_Event event;
 
@@ -343,7 +343,7 @@ void CoreProcInput(void) {
 
 }
 
-#if defined(WIN32) || defined(GCW) || defined(LINUX)
+#if defined(WIN32) || defined(GCW) || defined(LINUX) || defined(POCKETGO)
 U32 scrbuf2[1228800/4];
 #endif
 
@@ -359,7 +359,7 @@ void GameCoreTick(void) {
 	memcpy(screen->pixels,scrbuf,76800);
 #endif
 
-#if defined(WIN32) || defined(GCW) || defined(LINUX)
+#if defined(WIN32) || defined(GCW) || defined(LINUX) || defined(POCKETGO)
 #if 0
 	U32 x,y,i,ii,col;
 	U8 c,r,b,g;

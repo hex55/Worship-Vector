@@ -1,0 +1,63 @@
+TOOLCHAIN_SYSROOT = /opt/miyoo/usr/arm-buildroot-linux-musleabi/sysroot/usr
+BIN_BASE = /opt/miyoo/bin/
+CC = arm-linux-gcc
+
+#DEBUG=1
+
+EXE = worship.bin
+
+CFLAGS = -fomit-frame-pointer -ffunction-sections -ffast-math -fsingle-precision-constant -Ofast -march=armv5te -mtune=arm926ej-s
+CFLAGS += -D__BUILDDATE=\"$(shell date +%d-%b-%Y)\" -DPOCKETGO
+LDFLAGS = -s -flto
+INCLUDE = -I$(TOOLCHAIN_SYSROOT)/include -I$(TOOLCHAIN_SYSROOT)/include/SDL
+
+ifdef DEBUG
+ CFLAGS += -g
+endif
+
+LIB = $(shell $(BIN_BASE)pkg-config --libs sdl SDL_image SDL_ttf SDL_mixer) -logg
+
+HOST=arm-linux-
+
+CC = $(HOST)gcc
+STRIP = $(HOST)strip
+
+SRC = 	gameframe.c \
+	gamestate.c \
+	initgame.c \
+	mapdata.c \
+	playeriteraction.c \
+	renderobjects.c \
+	vars.c \
+	gamegui.c \
+	gamestep.c \
+	main.c \
+	mobs.c \
+	postrender.c \
+	sblit.c \
+	vlines.c \
+	zmath.c \
+	gameloop.c \
+	gpu3d.c \
+	mainmenu.c \
+	palette.c \
+	rendermap.c \
+	ssystem.c \
+	waveai.c
+CFLAGS += $(DEFS)
+
+OBJ = $(SRC:.c=.o)
+
+all : $(SRC) $(EXE)
+
+$(EXE): $(OBJ)
+	$(CC) $(LDFLAGS) $(OBJ) $(LIB) -o $@
+ifndef DEBUG
+	$(STRIP) $(EXE)
+endif
+
+.c.o:
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
+
+clean:
+	rm -rf $(OBJ) $(EXE)
